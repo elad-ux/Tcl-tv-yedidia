@@ -23,6 +23,8 @@ import subprocess
 import sys
 
 YOUTUBE = "com.google.android.youtube.tv"
+# yes+ Android TV package per APKMirror listings; still confirmed on the TV at runtime.
+YES_PLUS = "il.co.yes.yesplus"
 
 # Keywords used to auto-detect the TV provider app. The exact package names of
 # Cellcom TV / yes+ / HOT / Partner TV were not verified, so the script detects
@@ -38,7 +40,11 @@ PROTECTED_PREFIXES = (
     "com.google.android.tvlauncher",       # stock home screen
     "com.google.android.leanbacklauncher",
     "com.google.android.apps.tv.launcherx",
-    "com.google.android.tv.remote",
+    "com.google.android.tv.remote",        # remote services: phone remote app, BT remote pairing
+    "com.google.android.tv.remote.service",
+    "com.google.android.tv.axel",          # remote/accessory pairing on some builds
+    "com.google.android.bluetooth",
+    "com.google.android.apps.tv.remote",
     "com.google.android.tvsetup",
     "com.google.android.tungsten.setupwraith",
     "com.google.android.webview",
@@ -108,6 +114,10 @@ def is_protected(pkg):
 
 
 def pick_provider(serial):
+    if YES_PLUS in packages(serial):
+        ans = input(f"Found yes+ ({YES_PLUS}). Keep it? [Y/n]: ").strip().lower()
+        if ans in ("", "y", "yes"):
+            return YES_PLUS
     candidates = [p for p in packages(serial, "-3")
                   if any(k in p.lower() for k in PROVIDER_KEYWORDS)]
     if not candidates:
