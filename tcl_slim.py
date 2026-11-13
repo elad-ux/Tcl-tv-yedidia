@@ -23,8 +23,9 @@ import subprocess
 import sys
 
 YOUTUBE = "com.google.android.youtube.tv"
-# yes+ Android TV package per APKMirror listings; still confirmed on the TV at runtime.
-YES_PLUS = "il.co.yes.yesplus"
+# User's provider is Cellcom TV+. Its Android TV package name is NOT verified,
+# so it is detected on the TV by this keyword and confirmed at runtime.
+PREFERRED_PROVIDER_KEYWORD = "cellcom"
 
 # Keywords used to auto-detect the TV provider app. The exact package names of
 # Cellcom TV / yes+ / HOT / Partner TV were not verified, so the script detects
@@ -114,10 +115,11 @@ def is_protected(pkg):
 
 
 def pick_provider(serial):
-    if YES_PLUS in packages(serial):
-        ans = input(f"Found yes+ ({YES_PLUS}). Keep it? [Y/n]: ").strip().lower()
-        if ans in ("", "y", "yes"):
-            return YES_PLUS
+    for pkg in packages(serial):
+        if PREFERRED_PROVIDER_KEYWORD in pkg.lower():
+            ans = input(f"Found Cellcom TV app ({pkg}). Keep it? [Y/n]: ").strip().lower()
+            if ans in ("", "y", "yes"):
+                return pkg
     candidates = [p for p in packages(serial, "-3")
                   if any(k in p.lower() for k in PROVIDER_KEYWORDS)]
     if not candidates:

@@ -31,4 +31,4 @@ The TV is on the user's home LAN (private IP). Cloud sessions cannot reach it: t
 - `PROTECTED_PREFIXES` must keep covering: launchers, Settings/`com.android.*`, GMS/GSF, Play Store (needed to update the two kept apps), WebView, keyboard, voice search (`katniss`), Chromecast built-in (`mediashell`), and all vendor/SoC packages (`com.tcl.*`, `com.mediatek.*`, etc. — HDMI inputs, picture, tuner). TCL-specific packages are never auto-disabled.
 - `KNOWN_BLOAT` includes TalkBack; the README tells users to remove it if someone needs a screen reader.
 - Remote-control functions must keep working (user requirement): Bluetooth, TV remote service, voice search, Chromecast, HDMI-CEC (vendor packages).
-- yes+ package `il.co.yes.yesplus` (per APKMirror) is the user's provider. User currently has only a phone: `PHONE.md` covers the no-computer paths (TV settings menu, or Android ADB app).
+- User's provider is **Cellcom TV+** (corrected from yes+). Its package name is unverified; the script prefers any package containing `cellcom` and asks to confirm. User currently has only a phone: `PHONE.md` covers the no-computer paths (TV settings menu, or Android ADB app).
